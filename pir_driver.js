@@ -4,7 +4,6 @@ var bone = require('bonescript');
 
 var PIR = module.exports = function(pin) {
   Device.call(this);
-  console.log('PIN:', pin)
   this.pin = pin || 'P8_19';
 };
 util.inherits(PIR, Device);
