@@ -13,6 +13,7 @@ PIR.prototype.init = function(config) {
     .state('undetermined')
     .type('pir')
     .name('PIR Sensor')
+    .when('undetermined', { allow: ['motion', 'no-motion'] })
     .when('no-motion', { allow: ['motion'] })
     .when('motion', { allow: ['no-motion'] })
     .map('motion', this.motion)
