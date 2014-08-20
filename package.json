@@ -1,6 +1,6 @@
 {
   "name": "zetta-pir-bonescript-driver",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "PIR bonescript driver for zetta",
   "main": "index.js",
   "scripts": {

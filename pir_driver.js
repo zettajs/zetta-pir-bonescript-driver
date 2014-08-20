@@ -2,7 +2,12 @@ var Device = require('zetta').Device;
 var util = require('util');
 var bone = require('bonescript');
 
-var MOTION_THRESHOLD = 2500; // ms
+var MOTION_THRESHOLD = 500; // ms
+var READ_INTERVAL = 50;
+var PinStates = {
+  0: 'motion',
+  1: 'no-motion'
+};
 
 var PIR = module.exports = function(pin) {
   Device.call(this);
@@ -24,20 +29,30 @@ PIR.prototype.init = function(config) {
   var self = this;
   var timer = null;
   bone.pinMode(this.pin, bone.INPUT);
-  bone.attachInterrupt(this.pin, true, bone.CHANGE, function(x) {
-    if (x.value === undefined) {
+  
+  function checkPin(x) {
+    if (x.err || x.value === undefined) {
       return;
     }
-    if (x.value === 0) {
+
+    if (self.state === 'undetermined') {
+      self.call(PinStates[x.value], function() {});
+    }
+
+    // state changed
+    if (self.state !== PinStates[x.value] && timer === null) {
+      timer = setTimeout(function() {
+        self.call(PinStates[x.value], function() {});
+      }, MOTION_THRESHOLD);
+    } else if (self.state === PinStates[x.value]){
       clearTimeout(timer);
       timer = null;
-      self.call('motion', function() {});
-    } else if (timer === null) {
-      timer = setTimeout(function() {
-        self.call('no-motion', function() {});
-      }, MOTION_THRESHOLD);
     }
-  });
+  }
+
+  setInterval(function(){
+    bone.digitalRead(self.pin, checkPin);
+  }, READ_INTERVAL);
 };
 
 PIR.prototype.motion = function(cb) {
