@@ -25,12 +25,16 @@ PIR.prototype.init = function(config) {
   var timer = null;
   bone.pinMode(this.pin, bone.INPUT);
   bone.attachInterrupt(this.pin, true, bone.CHANGE, function(x) {
+    if (x.value === undefined) {
+      return;
+    }
     if (x.value === 0) {
       clearTimeout(timer);
-      self.call('motion');
-    } else if(timer === null) {
-      setTimeout(function() {
-        self.call('no-motion');
+      timer = null;
+      self.call('motion', function() {});
+    } else if (timer === null) {
+      timer = setTimeout(function() {
+        self.call('no-motion', function() {});
       }, MOTION_THRESHOLD);
     }
   });
@@ -38,8 +42,10 @@ PIR.prototype.init = function(config) {
 
 PIR.prototype.motion = function(cb) {
   this.state = 'motion';
+  cb();
 };
 
 PIR.prototype.noMotion = function(cb) {
   this.state = 'no-motion';
+  cb();
 };
