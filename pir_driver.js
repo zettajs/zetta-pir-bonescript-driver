@@ -11,7 +11,7 @@ var PinStates = {
 
 var PIR = module.exports = function(pin) {
   Device.call(this);
-  this.pin = pin || 'P8_19';
+  this.pin = pin || 'P9_12';
 };
 util.inherits(PIR, Device);
 
