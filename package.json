@@ -1,6 +1,6 @@
 {
   "name": "zetta-pir-bonescript-driver",
-  "version": "0.8.0",
+  "version": "0.9.0",
   "description": "PIR bonescript driver for zetta",
   "main": "index.js",
   "scripts": {
@@ -15,7 +15,7 @@
   "dependencies": {
     "bonescript": "0.2.4",
     "zetta-auto-scout": "^0.5.0",
-    "zetta-device": "^0.3.0"
+    "zetta-device": "^0.7.0"
   },
   "bugs": {
     "url": "https://github.com/zettajs/zetta-pir-bonescript-driver/issues"
